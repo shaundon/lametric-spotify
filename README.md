@@ -15,7 +15,7 @@ npm install
 ## Run
 
 ```
-npm start
+SPOTIFY_API_TOKEN='put your OAuth token here' npm start
 ```
 
 ## Tests
