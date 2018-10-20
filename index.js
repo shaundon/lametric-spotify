@@ -2,9 +2,20 @@ const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
 const app = express();
 const spotify = new SpotifyWebApi();
-spotify.setAccessToken(process.env.SPOTIFY_API_TOKEN);
+
+const apiToken = process.env.SPOTIFY_API_TOKEN;
+if (apiToken) {
+    spotify.setAccessToken(process.env.SPOTIFY_API_TOKEN);
+} else {
+    console.error('SPOTIFY_API_TOKEN is not set. Please set this as an env var.');
+}
 
 app.get('/', async (req, res) => {
+    const apiToken = process.env.SPOTIFY_API_TOKEN;
+    if (!apiToken) {
+        res.status(500).send('SPOTIFY_API_TOKEN not set.');
+        return;
+    }
 
     try {
         const { body: nowPlaying } = await spotify.getMyCurrentPlaybackState();
