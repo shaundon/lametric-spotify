@@ -2,22 +2,6 @@ const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
 const app = express();
 
-const { 
-    CLIENT_ID: clientId, 
-    CLIENT_SECRET: clientSecret 
-} = process.env;
-
-if (!clientId || !clientSecret) {
-    console.error(`Set CLIENT_ID and CLIENT_SECRET as env vars. Exiting..`);
-    process.exit(1);
-}
-
-const spotify = new SpotifyWebApi({
-    clientId,
-    clientSecret,
-    redirectUri: 'https://developer.lametric.com/redirect'
-});
-
 let allowedDevices = process.env.ALLOWED_DEVICES;
 
 if (allowedDevices) {
@@ -26,21 +10,15 @@ if (allowedDevices) {
 }
 
 app.get('/', async (req, res) => {
-    console.log(req.get['authorization']);
+    console.log(req.headers.authorization);
     console.log(req.headers);
-    if (!req.get['authorization']) {
+    if (!req.headers.authorization) {
         res.status(400).send(`Missing authorization header.`);
     }
 
-    const authToken = req.get['authorization'].split('Bearer ')[1];
+    const authToken = req.headers.authorization.split('Bearer ')[1];
+    const spotify = new SpotifyWebApi();
     spotify.setAccessToken(authToken);
-    
-    // try {
-    //     const { access_token } = await spotify.authorizationCodeGrant(auth_code_0);
-    //     spotify.setAccessToken(process.env.SPOTIFY_API_TOKEN);
-    // } catch (err) {
-    //     res.status(500).send(`Error getting access token`, err);
-    // }
 
     try {
         const { body: nowPlaying } = await spotify.getMyCurrentPlaybackState();
