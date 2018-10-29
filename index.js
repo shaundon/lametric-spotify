@@ -33,6 +33,8 @@ app.get('/auth', (req, res) => {
 });
 
 app.get('/', async (req, res) => {
+    console.log(req.header['authorization']);
+    console.log(req.headers);
     if (!req.header['authorization']) {
         res.status(400).send(`Missing authorization header.`);
     }
