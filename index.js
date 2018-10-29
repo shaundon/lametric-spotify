@@ -36,6 +36,7 @@ app.get('/', async (req, res) => {
     const { auth_code_0 } = req.query;
     console.log(req.query);
     console.log(req.header['Authorization']);
+    return;
     if (!auth_code_0) {
         res.status(400).send(`Missing "auth_code_0" GET param.`);
         return;
