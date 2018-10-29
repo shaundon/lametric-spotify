@@ -3,8 +3,6 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const app = express();
 
 app.get('/', async (req, res) => {
-    console.log(req.headers.authorization);
-    console.log(req.headers);
     if (!req.headers.authorization) {
         res.status(400).send(`Missing authorization header.`);
     }
