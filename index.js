@@ -22,6 +22,7 @@ app.get('/', async (req, res) => {
 
     try {
         const { body: nowPlaying } = await spotify.getMyCurrentPlaybackState();
+        console.log(nowPlaying);
         let responseText = '-';
         if (nowPlaying['is_playing'] && nowPlaying.item && nowPlaying.item.name && nowPlaying.item.artists) {
             const track = nowPlaying.item.name;
