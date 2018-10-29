@@ -34,6 +34,9 @@ app.get('/auth', (req, res) => {
 
 app.get('/', async (req, res) => {
     const { auth_code_0 } = req.query;
+    console.log(req);
+    console.log(req.query);
+    console.log(req.body);
     if (!auth_code_0) {
         res.status(400).send(`Missing "auth_code_0" GET param.`);
         return;
@@ -57,7 +60,7 @@ app.get('/', async (req, res) => {
                 responseText = '-';
             }
         }
-        res.send({
+        res.status(200).send({
             "frames": [
                 {
                     "text": responseText,
