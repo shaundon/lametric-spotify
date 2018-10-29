@@ -2,13 +2,6 @@ const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
 const app = express();
 
-let allowedDevices = process.env.ALLOWED_DEVICES;
-
-if (allowedDevices) {
-    allowedDevices = allowedDevices.split(',');
-    console.log(`Setting allowed devices to ${allowedDevices.join(',')}`);
-}
-
 app.get('/', async (req, res) => {
     console.log(req.headers.authorization);
     console.log(req.headers);
@@ -20,10 +13,15 @@ app.get('/', async (req, res) => {
     const spotify = new SpotifyWebApi();
     spotify.setAccessToken(authToken);
 
+    let allowedDevices = req.query.devices;
+    if (allowedDevices) {
+        console.log(`Setting allowed devices to ${allowedDevices}.`);
+        allowedDevices = allowedDevices.split(',');
+    }
+
     try {
         const { body: nowPlaying } = await spotify.getMyCurrentPlaybackState();
-        console.log(nowPlaying);
-        let responseText = '-';
+        let responseText = '';
         if (nowPlaying['is_playing'] && nowPlaying.item && nowPlaying.item.name && nowPlaying.item.artists) {
             const track = nowPlaying.item.name;
             const artists = nowPlaying.item.artists.map(artist => artist.name).join(', ');
@@ -32,6 +30,7 @@ app.get('/', async (req, res) => {
                 responseText = '-';
             }
         }
+        console.log(responseText);
         res.status(200).send({
             "frames": [
                 {

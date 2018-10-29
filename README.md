@@ -2,7 +2,7 @@
 
 ## About
 
-Back end for a [LaMetric Time](https://lametric.com/) to poll and get now playing info for your Spotify account.
+Back end for a [LaMetric Time](https://lametric.com/) app to poll and get now playing info for your Spotify account.
 
 ## Rationale and use case
 
@@ -14,14 +14,7 @@ So, this is my hack to get this functionality.
 
 As this is linked directly to Spotify and not my Amazon Echo, it will display my now playing info even if I'm out and about. Some people might find this desirable but I don't want this functionality, as I want it to be local to the home. 
 
-So, there's extra logic to have it only return a result if the speaker that Spotify is playing from matches a predefined list. To do this, set the `ALLOWED_DEVICES` environment variable. It's a comma-separated list, so you can specify multiple
-speakers or groups, e.g. `ALLOWED_DEVICES=Kitchen,Downstairs,Living Room`.
-
-## Prerequisites
-
-* Spotify client ID and client secret. Get this from their developer website.
-* LaMetric developer account. You'll need to publish this as a private app and install it onto your device.
-* Somewhere to deploy this back end - e.g. Heroku.
+So, there's extra logic to have it only return a result if the speaker that Spotify is playing from matches a predefined list. To do this, send `devices` as a query param with your requests. It's a comma-separated list, so you can specify multiple speakers or groups, e.g. `devices=Kitchen,Downstairs,Living Room`
 
 ## Install
 
@@ -32,11 +25,27 @@ npm install
 ## Run
 
 ```
-CLIENT_ID='client id' CLIENT_SECRET='client secret' npm start
+npm start
 ```
 
-You'll need to send a Spotify authorisation key linked to your account with your requests. To do this, go to `/auth` and you'll be given a URL you can go to to authenticate. After authenticating, the callback URL will have a code as a GET param. Take this code and then send it as a GET param to `/` in your requests, for example `http://localhost:3000?auth_token_0=your_code_here.
+## Other things to do
 
-## Future
+### Spotify
 
-I want to make it support multiple API keys, so that if one account isn't listening to music I can check another. This is so that multiple people living in the same household can use this app.
+On Spotify's [developer dashboard](https://developer.spotify.com), create an app. Use `https://developer.lametric.com/redirect` for the redirect URL, and make a note of the client ID and client secret.
+
+### LaMetric
+
+Go to the [developer portal](https://developer.lametric.com/) and sign in. Then, create an app. You'll need it to poll this back end every X seconds.
+
+Use these settings for your app:
+
+URL to be polled: URL of wherever you host this app - e.g. Heroku or AWS.
+Authentication: Choose `OAuth2` and select `Spotify`. There you'll able to enter your client ID and client secret from Spotify.  
+Scope: `user-read-playback-state`
+Send in both body and headers
+
+If you'd like to make use of the 'allowed devices` functionality mentioned earlier, add this as a parameter to the app too.
+
+Now, install this app on your LaMetric Time and log into Spotify.
+
