@@ -25,21 +25,14 @@ if (allowedDevices) {
     console.log(`Setting allowed devices to ${allowedDevices.join(',')}`);
 }
 
-app.get('/auth', (req, res) => {
-    const scopes = ['user-read-playback-state'];
-    const state = 'eba';
-    const authUrl = spotify.createAuthorizeURL(scopes, state);
-    res.send(`It's dangerous to go alone! Take this: ${authUrl}`);
-});
-
 app.get('/', async (req, res) => {
-    console.log(req.header['authorization']);
+    console.log(req.get['authorization']);
     console.log(req.headers);
-    if (!req.header['authorization']) {
+    if (!req.get['authorization']) {
         res.status(400).send(`Missing authorization header.`);
     }
 
-    const authToken = req.header['authorization'].split('Bearer ')[1];
+    const authToken = req.get['authorization'].split('Bearer ')[1];
     spotify.setAccessToken(authToken);
     
     // try {
