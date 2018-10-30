@@ -12,9 +12,9 @@ So, this is my hack to get this functionality.
 
 ### Specific speakers
 
-As this is linked directly to Spotify and not my Amazon Echo, it will display my now playing info even if I'm out and about. Some people might find this desirable but I don't want this functionality, as I want it to be local to the home. 
+As this is linked directly to Spotify, it will display your now playing info even if you're not at home.
 
-So, there's extra logic to have it only return a result if the speaker that Spotify is playing from matches a predefined list. To do this, send `devices` as a query param with your requests. It's a comma-separated list, so you can specify multiple speakers or groups, e.g. `devices=Kitchen,Downstairs,Living Room`
+To only return a result when the speaker that Spotify is playing from matches a predefined list, send `devices` as a query param with your requests. It's a comma-separated list, so you can specify multiple speakers or groups, e.g. `devices=Kitchen,Downstairs,Living Room`
 
 ## Install
 
