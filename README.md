@@ -8,7 +8,7 @@ Back end for a [LaMetric Time](https://lametric.com/) app to poll and get now pl
 
 I use an Amazon Echo in my kitchen to listen to music a lot. I also have a LaMetric Time in there. I thought it would be cool to display the currently playing song on it. I hoped that this would already exist, but unfortunately it doesn't (there is an IFTTT trigger for Amazon Echo 'now playing' changing, but it currently only works with Prime Music).
 
-So, this is my hack to get this functionality.
+So, this is my hack to get this functionality. I've been running it on my clock for over two years and it's not had a single issue!
 
 ### Specific speakers
 
